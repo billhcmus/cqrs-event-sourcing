@@ -1,0 +1,26 @@
+version: "2"
+services:
+  nats:
+    image: 'nats:0.8.0'
+    entrypoint: "/gnatsd -DV"
+    expose:
+      - "4222"
+    ports:
+      - "8222:8222"
+    hostname: nats-server
+  command-service:
+    build: ./money-transfer-service
+    ports:
+      - 8080:8080
+    links:
+      - nats
+    depends_on:
+      - nats
+  query-service:
+    build: ./money-transfer-view-service
+    ports:
+      - 8081:8081
+    links:
+      - nats
+    depends_on:
+      - nats
