@@ -55,95 +55,15 @@ Query store: là read model, nơi aggregates được lưu trữ (PostgreSQL).
 
 - Chuyển tiền vào tài khoản
 
-```plantuml
-@startuml
-
-actor "User"
-
-User -> AccountService : depositMoney
-participant Cache
-participant StateStore
-note over of AccountService: create deposit event
-AccountService -> AccountService: apply events
-AccountService -> EventStore: store event to event store
-alt EventStore return FAIL, TIMEOUT
-EventStore --> AccountService: FAIL, TIMEOUT
-AccountService -> EventStore: retry
-end
-EventStore -> AccountService: Success
-AccountService -> StateStore: update Account in state store
-AccountService -> Cache: save Account to cache
-AccountService -> User: Success
-@enduml
-```
+![imgurl](img/deposit.png)
 
 - Rút tiền
 
-```plantuml
-@startuml
-actor "User"
-User -> AccountService: withdrawMoney
-participant Cache
-alt Account not exist in cache
-AccountService -> StateStore: get Account
-StateStore --> AccountService: Account
-AccountService -> Cache: save Account
-end
-Cache --> AccountService: Account
-AccountService -> AccountService: check balance
-alt AccountService return FAIL
-note over of AccountService: Not enough balance
-AccountService -> User: FAIL
-end
-note over of AccountService: Create withdraw event
-AccountService -> AccountService: apply events
-AccountService -> EventStore: store account events to event store
-alt EventStore return FAIL, TIMEOUT
-EventStore --> AccountService: FAIL, TIMEOUT
-AccountService --> EventStore: retry
-end
-EventStore -> AccountService: success
-AccountService -> StateStore: update Account in state store
-AccountService -> Cache: update Account in cache
-AccountService --> User: result
-participant EventStore
-@enduml
-```
+![imgurl](img/withdraw.png)
 
 - Chuyển tiền từ ví sang ví
 
-```plantuml
-@startuml
-actor "App"
-App -> AccountService: transfer money
-participant Cache
-alt Account not exist in cache
-AccountService -> StateStore: get Account
-StateStore --> AccountService: Account
-AccountService -> Cache: save Account
-end
-Cache --> AccountService: Account
-AccountService -> AccountService: check balance
-alt AccountService return FAIL
-note over of AccountService: Not enough balance
-AccountService -> App: FAIL
-end
-note over of AccountService: Create transfer event
-AccountService -> AccountService: apply events
-AccountService -> EventStore: store account events to event store
-alt EventStore return FAIL, TIMEOUT
-EventStore --> AccountService: FAIL, TIMEOUT
-AccountService --> EventStore: retry
-end
-EventStore -> AccountService: success
-AccountService -> StateStore: update Account in state store
-AccountService -> Cache: update Account in cache
-AccountService --> App: result
-participant EventStore
-@enduml
-```
-
-
+![imgurl](img/transfer.png)
 
 
 - Account controller: client gọi đến service
