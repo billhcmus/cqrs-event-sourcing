@@ -1,0 +1,56 @@
+syntax="proto3";
+package acsys;
+
+message Status {
+    int64 code = 1;
+    string error = 2;
+}
+
+enum OperationType {
+    UNKNOWN_OP = 0;
+
+    // giao dịch tiền ra
+    OP_OUT = 1;
+
+    // giao dịch tiền vào
+    OP_IN = 2;
+
+    // giao dịch đóng băng tiền
+    OP_FREEZE = 3;
+
+    // giao dịch phá băng tiền
+    OP_UNFREEZE = 4;
+
+    // giao dịch phá băng + tiền ra
+    OP_UNFREEZE_OUT = 5;
+
+    // giao dịch tiền vào + đóng băng tiền
+    OP_IN_FREEZE = 6;
+}
+
+enum TransType {
+    TT_UNKNOWN = 0;
+    TT_TOP_UP = 1; // top-up to zas account
+    TT_MONEY_TRANSFER = 2; // money transfer in zas
+    TT_PAYMENT = 3; // payment
+    TT_WITHDRAW = 4; // withhdrawl
+}
+
+enum TemplateId {
+    TID_UNKNOWN_TEMPLATE = 0;
+    TID_TOP_UP = 20001;
+    TID_WITHDRAW = 20002;
+    TID_TRANSFER = 30001;
+    TID_FREEZE_BALANCE = 40001;
+    TID_UNFREEZE_BALANCE = 40002;
+}
+
+
+message Ping {
+    int64 timestamp = 1;
+}
+
+message Pong {
+    int64 timestamp = 1;
+    string system_name = 2;
+}

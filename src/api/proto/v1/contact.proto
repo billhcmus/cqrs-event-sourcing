@@ -1,0 +1,80 @@
+syntax="proto3";
+package acsys;
+
+import "common.proto";
+
+enum ContactStatus {
+    DELETED = 0;
+    ACTIVE = 1;
+}
+
+message Contact {
+    //Account ID of this contact
+    string account_number = 1;
+
+    //Contact name
+    string contact_name = 2;
+
+    //Contact belong to
+    string owner_account_number = 3;
+
+    //Contact status
+    ContactStatus contact_status = 4;
+
+    //Created time
+    string created_time = 5;
+}
+
+message CreateContactRequest {
+    //Contact account ID
+    string account_number = 1;
+
+    //Contact custom name
+    string contact_name = 2;
+
+    //Contact's owner
+    string owner_account_number = 3;
+}
+
+message CreateContactResponse {
+    //Status
+    Status status = 1;
+    //Contact
+    Contact contact = 2;
+}
+
+message UpdateContactRequest {
+    //Contact account ID
+    string account_number = 1;
+    //Contact's owner
+    string owner_account_number = 2;
+    //Contact new custom name
+    string new_contact_name = 3;
+}
+
+message UpdateContactResponse {
+    Status status = 1;
+    Contact contact = 2;
+}
+
+message QueryContactRequest {
+    //Owner account ID
+    string owner_account_number = 1;
+}
+
+message QueryContactResponse {
+    Status status = 1;
+    repeated Contact contacts = 2;
+}
+
+message DeleteContactRequest {
+    //Owner account ID
+    string owner_account_number = 1;
+    //contact account ID
+    string account_number = 2;
+}
+
+message DeleteContactResponse {
+    Status status = 1;
+    Contact deleted_contact = 2;
+}
