@@ -1,0 +1,9 @@
+syntax="proto3";
+package pb;
+
+message BaseCommand {
+    string type = 1;
+    string aggregate_id = 2;
+    string aggregate_type = 3;
+    uint64 version = 4;
+}

@@ -1,0 +1,8 @@
+syntax="proto3";
+package pb;
+import "event.proto";
+
+service EventStore {
+    rpc Save(SaveEventsRequest) returns (SaveEventsResponse) {}
+    rpc Load(LoadEventsRequest) returns (LoadEventsResponse) {}
+}

@@ -1,0 +1,8 @@
+syntax="proto3";
+package pb;
+
+message Status {
+    // code = 0 => success
+    int64 code = 1;
+    string error = 2;
+}

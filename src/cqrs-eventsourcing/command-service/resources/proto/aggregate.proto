@@ -1,0 +1,9 @@
+syntax="proto3";
+
+package pb;
+
+message BaseAggregate {
+    string aggregate_id = 1;
+    string aggregate_type = 2;
+    uint64 version = 3;
+}
